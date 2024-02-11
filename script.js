@@ -2,7 +2,10 @@
 const xCoords = document.getElementById('x-coordinates');
 const yCoords = document.getElementById('y-coordinates');
 const button = document.getElementById('btn');
+const querries = document.getElementById('querries');
+const inputs = document.getElementById('inputs');
 var msg = document.getElementById('msg');
+const button_menu = document.getElementById('menu-btn');
 var marker = new Array();
 
 // Initial latitude and longitude values
@@ -46,6 +49,12 @@ function createPopups(lat,long){
           })
 }
 
+button_menu.addEventListener('click',()=>{
+    querries.style.display = 'block';
+    inputs.style.height=''
+    inputs.classList.remove('slide-animation');
+})
+
 // Event listener for button click
 button.addEventListener('click', () => {
     // Update latitude and longitude from input values
@@ -88,7 +97,14 @@ function roundTo(n, digits) {
 }
 
 // Event listener for map click
-map.on('click', function(e) {        
+map.on('click', function(e) {       
+    var screenWidthCheck = window.innerWidth 
+    if (screenWidthCheck < 768){
+        querries.style.display = 'none';
+        inputs.style.height='180px';
+        inputs.classList.add('slide-animation');
+    }
+
     var popLocation= e.latlng;
     var lat = roundTo(popLocation.lat,2);
     var long = roundTo(popLocation.lng,2);

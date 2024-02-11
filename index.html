@@ -7,7 +7,7 @@
     <meta charset="UTF-8"> <!-- Character encoding -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Browser compatibility -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for responsive design -->
-    <title>Document</title> <!-- Title of the document -->
+    <title>Mapfinder</title> <!-- Title of the document -->
     <!-- Links to external CSS files -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
@@ -25,13 +25,14 @@
     <div class="title">
         <!-- Title of the page with an icon -->
         <p>map finder <i class="fa-solid fa-magnifying-glass "></i></p>
+        <button id="menu-btn" class="btn btn-transparent"> <i class="fa-solid fa-bars fa-2xl" style="color: #ffff;"></i></button>
     </div>
 
     <div class="all-body">
         <!-- Container for the main content -->
-        <div class="inputs">
+        <div id="inputs" class="inputs">
             <!-- Container for input fields and button -->
-            <div class="querries">
+            <div id="querries" class="querries">
                 <!-- Labels and input fields for entering coordinates -->
                 <label for="x-coordinates">enter x coordinates:</label>
                 <br class="break">
@@ -43,8 +44,10 @@
                 <br class="break">
                 <!-- Button for triggering coordinate search -->
                 <button type="submit" id="btn">find me! <i class="fa-solid fa-right-long"></i></button>
-                <!-- Container for displaying messages -->
-                <div id="msg"></div>
+            </div>
+            <div id="msg-box" class="buton-and-msg">
+                 <!-- Container for displaying messages -->
+                 <div id="msg"></div>
             </div>
         </div>
         <!-- Container for displaying the map -->
