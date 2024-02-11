@@ -111,19 +111,24 @@ map.on('click', function(e) {
     // Round latitude and longitude to 2 decimal places
             console.log(popLocation)    
             createPopups(lat,long)
-            const url = `https://map-places.p.rapidapi.com/nearbysearch/json?location=${lat}%2C${long}&radius=1500&keyword=attraction&type=park`;
-            const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': '292773086dmsh5f85c14ffe2e718p107ceajsn4d0a25257c45',
-                    'X-RapidAPI-Host': 'map-places.p.rapidapi.com'
-                }
-            };
-            
+            radius = 2500;
+            const query = `[out:json];
+                            (
+                            node(around:${radius},${lat},${long})["leisure"="park"];
+                            );
+                            out body;
+                            >;
+                            out skel qt;`;
+
             try {
-                fetch(url, options)
+                // Send the query to the Overpass API
+                 fetch('https://overpass-api.de/api/interpreter', {
+                    method: 'POST',
+                    body: query,
+                })
                 .then(response => response.json())
-                .then(data => {
+                .then( data =>{
+
                     console.log('tours Data',data);
                     // Remove existing markers from the map
                     marker.forEach(mark => {
@@ -132,16 +137,11 @@ map.on('click', function(e) {
                     marker = []; // Clear the marker array
                     
                     // Add new markers from fetched data
-                    data.results.forEach(result => {
+                    data.elements.forEach(element => {
                         console.log(result);
-                        var lat = result.geometry.location.lat;
-                        var long = result.geometry.location.lng;
-                        var customIcon = L.icon({
-                            iconUrl: result.icon,    
-                            iconSize:     [30, 35], // size of the icon
-                            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-                            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                        });
+                        var lat = element.lat;
+                        var long =element.lon;
+                        
                         var currentMarker = new L.marker([lat, long],{icon: redMarker}).addTo(map);
                         marker.push(currentMarker); // Add marker to the array
                         
