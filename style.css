@@ -103,6 +103,8 @@ label {
         width: 100%;
         float: right;
         padding-right: 18px;
+        border: 1px solid black;
+        border-radius: 50px;
     }
     
     .inputs {

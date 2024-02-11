@@ -12,7 +12,8 @@ var result ;
 
  // Creates a red marker with the coffee icon
  var redMarker = L.AwesomeMarkers.icon({
-    icon: 'glyphicon glyphicon-tree-deciduous',
+    icon: 'fa-solid fa-tree',
+    prefix: 'fa', 
     markerColor: 'green'
   });
 
