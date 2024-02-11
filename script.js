@@ -10,17 +10,11 @@ var lat = 0.02;
 var long = 36.90;
 var result ;
 
-function zoomAnimation(){
-    var sleepSetTimeout_ctrl;
-
-    function sleep(ms) {
-        clearInterval(sleepSetTimeout_ctrl);
-        return new Promise(resolve => sleepSetTimeout_ctrl = setTimeout(resolve, ms));
-    }
-
-
-}
-
+ // Creates a red marker with the coffee icon
+ var redMarker = L.AwesomeMarkers.icon({
+    icon: 'glyphicon glyphicon-tree-deciduous',
+    markerColor: 'green'
+  });
 
 function createPopups(lat,long){
   
@@ -131,7 +125,7 @@ map.on('click', function(e) {
                             iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
                             popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
                         });
-                        var currentMarker = new L.marker([lat, long],{icon: customIcon}).addTo(map);
+                        var currentMarker = new L.marker([lat, long],{icon: redMarker}).addTo(map);
                         marker.push(currentMarker); // Add marker to the array
                         
                         currentMarker.addTo(map); // Add marker to the map

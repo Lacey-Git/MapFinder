@@ -85,6 +85,11 @@ label {
     color: black;
 }
 
+.awesome-marker i {
+    font-size: 18px;
+    margin-top: 8px;
+}
+
 @media screen and (max-width:768px){
 
     .all-body {
