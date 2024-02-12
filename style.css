@@ -7,7 +7,7 @@
 }
 
 #map {
-    height: 585PX;
+    height: 90vh;
     width: 79.5%;
     float: right;
     padding-right: 18px;
@@ -102,6 +102,7 @@ label {
     flex-direction: row;
     justify-content: space-between;
     width: 100vw;
+    height: 10vh;
 }
 
 .title p {
@@ -135,7 +136,7 @@ label {
         margin-top: 0%;
     }
     #map {
-        height: 585PX;
+        height: 700PX;
         width: 100%;
         float: right;
         padding-right: 18px;
