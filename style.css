@@ -67,7 +67,19 @@ label {
   }
   
 
-
+  .reverse-slide-animation {
+    animation: reverseSlideAnimation 0.5s forwards;
+  }
+  
+  @keyframes reverseSlideAnimation {
+    from {
+      height: 180px; /* Starting height */
+    }
+    to {
+      height: 300px; /* Ending height */
+    }
+  }
+  
 #btn {
     margin-top: 30px;
     color: white;

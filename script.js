@@ -51,8 +51,8 @@ function createPopups(lat,long){
 
 button_menu.addEventListener('click',()=>{
     querries.style.display = 'block';
-    inputs.style.height=''
     inputs.classList.remove('slide-animation');
+    inputs.classList.add('reverse-slide-animation')
 })
 
 // Event listener for button click
@@ -102,6 +102,7 @@ map.on('click', function(e) {
     if (screenWidthCheck < 768){
         querries.style.display = 'none';
         inputs.style.height='180px';
+        inputs.classList.remove("reverse-slide-animation")
         inputs.classList.add('slide-animation');
     }
 
