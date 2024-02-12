@@ -122,6 +122,10 @@ label {
     margin-top: 8px;
 }
 
+#menu-btn{
+    display: none;
+}
+
 @media screen and (max-width:768px){
 
     .all-body {
@@ -172,5 +176,7 @@ label {
     
     #menu-btn{
         margin: 15px;
+        margin-top: 25px;
+        display: flex;
     }
 }
