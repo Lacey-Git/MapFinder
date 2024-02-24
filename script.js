@@ -6,13 +6,18 @@ const querries = document.getElementById('querries');
 const inputs = document.getElementById('inputs');
 var msg = document.getElementById('msg');
 const button_menu = document.getElementById('menu-btn');
+const searchbtn = document.querySelectorAll('.bton-search');
 var marker = new Array();
-
+var mapbox = document.getElementById('map');
+var searchInput = document.querySelectorAll('.search_input')
 // Initial latitude and longitude values
 var lat = 0.02;
 var long = 36.90;
 var result ;
+var query_location ;
 
+
+console.log(searchbtn)
  // Creates a red marker with the coffee icon
  var redMarker = L.AwesomeMarkers.icon({
     icon: 'fa-solid fa-tree',
@@ -49,17 +54,60 @@ function createPopups(lat,long){
           })
 }
 
+
+
 button_menu.addEventListener('click',()=>{
+    console.log('buton clicked')
     querries.style.display = 'block';
+    // mapbox.style.marginTop= '200px';
     inputs.classList.remove('slide-animation');
-    inputs.classList.add('reverse-slide-animation')
+    inputs.classList.add('reverse-slide-animation');
+    mapbox.classList.remove('slide-animationMarginTop');
+    mapbox.classList.add('reverse-slide-animationMarginTop');
+})
+
+
+searchbtn.forEach((button)=>{
+button.addEventListener('click',()=>{
+    console.log('searching ...')
+
+     searchInput.forEach((query)=>{
+        if (query.value != "")
+            {
+                
+               query_location = query.value
+
+
+                console.log(query_location)
+
+                try{
+                    fetch(`https://us1.locationiq.com/v1/search?key=pk.e7c1a5b1ef38da5e042a61139a63a56b&q=${query_location}&format=json&`)
+                    .then(response => response.json())
+                    .then(data =>{
+                            console.log('data:', data)
+
+                            var lat = data[0].lat;
+                            var long = data[0].lon;
+
+                        map.setView([lat,long],12);
+                        query_location.value
+                    })
+                    }
+                    catch (error) {
+                        console.error(error);
+                    }
+                }
+             
+            })
+
+        })
 })
 
 // Event listener for button click
 button.addEventListener('click', () => {
     // Update latitude and longitude from input values
-    lat = xCoords.value;
-    long = yCoords.value;
+    long = xCoords.value;
+    lat  = yCoords.value;
     // Clear input fields
     xCoords.value = "";
     yCoords.value = "";
@@ -104,6 +152,8 @@ map.on('click', function(e) {
         inputs.style.height='180px';
         inputs.classList.remove("reverse-slide-animation")
         inputs.classList.add('slide-animation');
+        mapbox.classList.remove('reverse-slide-animationMarginTop');
+        mapbox.classList.add('slide-animationMarginTop');
     }
 
     var popLocation= e.latlng;

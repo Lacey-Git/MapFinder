@@ -26,6 +26,13 @@
         <!-- Title of the page with an icon -->
         <p>map finder <i class="fa-solid fa-magnifying-glass "></i></p>
         <a id="menu-btn" class=""> <i class="fa-solid fa-bars fa-2xl" style="color: #ffff;"></i></a>
+        <div class="search-box mt-2">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control search_input" placeholder="Search Location " aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn bton-search btn-primary" type="button" id="button-addon"><i class="fa-solid fa-magnifying-glass "></i></button>
+            </div>              
+        </div>
+        
     </div>
 
     <div class="all-body">
@@ -51,7 +58,15 @@
             </div>
         </div>
         <!-- Container for displaying the map -->
-        <div id="map"></div>
+        <div class="map-area">
+            <div id="map"></div>
+            <div class="search-box-mobile  mt-3 me-5">
+                <div class="input-group  mb-3">
+                    <input type="text" class="form-control search_input" placeholder="Search Location">
+                    <button class="btn bton-search btn-primary bton-search " type="button"  id="button-addon2"><i class="fa-solid fa-magnifying-glass "></i></button>
+                  </div>              
+            </div>
+        </div>
     </div>
     
 </body>
