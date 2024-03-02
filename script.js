@@ -10,6 +10,9 @@ const searchbtn = document.querySelectorAll('.bton-search');
 var marker = new Array();
 var mapbox = document.getElementById('map');
 var searchInput = document.querySelectorAll('.search_input')
+var polylines = new Array();
+var marker_new = new Array();
+
 // Initial latitude and longitude values
 var lat = 0.02;
 var long = 36.90;
@@ -20,9 +23,9 @@ var query_location ;
 console.log(searchbtn)
  // Creates a red marker with the coffee icon
  var redMarker = L.AwesomeMarkers.icon({
-    icon: 'fa-solid fa-tree',
+    icon: 'fa-solid fa-square-parking',
     prefix: 'fa', 
-    markerColor: 'green'
+    markerColor: 'blue'
   });
 
 function createPopups(lat,long){
@@ -164,12 +167,13 @@ map.on('click', function(e) {
             createPopups(lat,long)
             radius = 2500;
             const query = `[out:json];
-                            (
-                            node(around:${radius},${lat},${long})["leisure"="park"];
-                            );
-                            out body;
-                            >;
-                            out skel qt;`;
+                (
+                    node(around:${radius},${lat},${long})["amenity"="parking"];
+                );
+                out body;
+                >;
+                out skel qt;`;
+
 
             try {
                 // Send the query to the Overpass API
@@ -189,11 +193,100 @@ map.on('click', function(e) {
                     
                     // Add new markers from fetched data
                     data.elements.forEach(element => {
-                        console.log(result);
-                        var lat = element.lat;
-                        var long =element.lon;
+                        console.log("overpass result", element);
+                        var lat1 = element.lat;
+                        var long1 =element.lon;
                         
-                        var currentMarker = new L.marker([lat, long],{icon: redMarker}).addTo(map);
+                        function toNumberString(num) { 
+                            if (Number.isInteger(num)) { 
+                              return num + ".0"
+                            } else {
+                              return num.toString(); 
+                            }
+                          }
+
+                        
+                        
+                        console.log("long: ",typeof(long))
+                        var currentMarker = new L.marker([lat1, long1],{icon: redMarker}).addTo(map).on('click', function(e) {
+                            function navigate(){
+                                long = toNumberString(long);
+                                lat = toNumberString(lat);
+                                long1 = toNumberString(long1);
+                                lat1 = toNumberString(lat1);
+
+
+                                const startCoords = `${long},${lat}`;
+                                const endCoords = `${long1},${lat1}`;
+                                const apiKey = '5b3ce3597851110001cf6248336a725ce6af473da9c418c23e073c72';
+                                
+                                const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${startCoords}&end=${endCoords}`;
+                                
+                                const headers = {
+                                  'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'
+                                };
+                                
+                                fetch(url, {
+                                  method: 'GET',
+                                  headers: headers
+                                })
+                                .then(response => {
+                                  if (response.status === 200) {
+                                   return response.json();
+                                  } else {
+                                    throw new Error('Failed to fetch directions');
+                                  }
+                                })
+                                .then(data => {
+                                  console.log(data);
+                                  pointlist_converted= []
+                                    data.features[0].geometry.coordinates.forEach(data_piece =>{
+                                        var list = [data_piece[1],data_piece[0]]
+                                        pointlist_converted.push(list)
+                                    })
+
+                                    var greenIcon = L.icon({
+                                        iconUrl: 'https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-green.png?raw=true', // URL to your green icon image
+                                        shadowUrl: 'https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-shadow.png?raw=true', // URL to the shadow image (optional)
+                                        iconSize: [25, 41],
+                                        iconAnchor: [12, 41],
+                                        popupAnchor: [1, -34],
+                                        shadowSize: [41, 41]
+                                    });
+
+                                    var active_marker = new L.marker([lat,long],{icon: greenIcon }).addTo(map);
+                                    
+                                    function featureRemover(){
+                                        for (let i = 0; i < arguments.length; i++) {
+                                            console.log(arguments[i])
+                                            arguments[i].forEach(argument =>{
+                                            map.removeLayer(argument);
+                                            })
+                                        } 
+
+                                    }
+
+                                    featureRemover(polylines,marker_new) 
+                                    
+                                    polylines =[ ]
+                                    marker_new = []
+                                    var active_polyline = new  L.polyline(pointlist_converted, { color: 'red', weight: 3, smoothFactor: 1 }).addTo(map);;
+
+                                   
+                                    polylines.push(active_polyline);
+                                    active_polyline.addTo(map);
+
+                                    marker_new.push(active_marker);
+                                    active_marker.addTo(map);
+                                })
+                                .catch(error => {
+                                  console.error('Error:', error);
+                                });
+                                
+                            }
+                            navigate()
+                        });
+                         
                         marker.push(currentMarker); // Add marker to the array
                         
                         currentMarker.addTo(map); // Add marker to the map
